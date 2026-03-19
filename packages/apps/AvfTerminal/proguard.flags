@@ -52,3 +52,29 @@
 }
 
 ##---------------End: proguard configuration for Gson  ----------
+
+##---------------Begin: keep rules for platform compatibility  ----------
+# FlagsCompat uses reflection to safely access platform Flags class.
+# Prevent R8 from inlining, optimizing, or removing the reflection-based
+# fallback logic — this is critical for app startup on devices where the
+# com.android.system.virtualmachine.flags.Flags class is unavailable.
+-keep,allowobfuscation class com.kimocoder.avfterminal.FlagsCompat {
+    <methods>;
+}
+
+# SplitInitializer runs during InitializationProvider.onCreate() before
+# any Activity starts. A crash here kills the app with no recovery.
+-keep class com.kimocoder.avfterminal.SplitInitializer { *; }
+
+# The platform Flags stub is compileOnly — it may not exist at runtime.
+# Suppress R8 warnings about the missing class.
+-dontwarn com.android.system.virtualmachine.flags.Flags
+
+# Platform/hidden API stubs that are compileOnly and may be absent at runtime
+-dontwarn android.crosvm.**
+-dontwarn android.system.virtualizationservice_internal.**
+-dontwarn android.system.virtualmachine.**
+-dontwarn libcore.io.**
+-dontwarn com.android.microdroid.**
+-dontwarn com.android.internal.annotations.**
+##---------------End: keep rules for platform compatibility  ----------
