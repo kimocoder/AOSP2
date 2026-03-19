@@ -292,8 +292,6 @@ internal data class ConfigJson(
     }
 
     companion object {
-        private const val DEBUG = true
-
         /** Parses JSON file at jsonPath */
         fun from(context: Context, jsonPath: Path): ConfigJson {
             try {

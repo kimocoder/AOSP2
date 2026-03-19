@@ -195,7 +195,6 @@ class VmLauncherService : Service() {
             }
         } catch (e: IOException) {
             throw RuntimeException("Failed to shrink rootfs disk", e)
-            return
         }
     }
 
@@ -206,7 +205,6 @@ class VmLauncherService : Service() {
         diskSize: Long,
         resultReceiver: ResultReceiver,
     ) {
-        val image = InstalledImage.getDefault(this)
         val json = ConfigJson.from(this, image.configPath)
         val configBuilder = json.toConfigBuilder(this)
         val customImageConfigBuilder = json.toCustomImageConfigBuilder(this)
@@ -285,7 +283,7 @@ class VmLauncherService : Service() {
         val queryInfo = NsdServiceInfo()
         queryInfo.serviceType = "_http._tcp"
         queryInfo.serviceName = "ttyd"
-        var resolvedInfo = CompletableFuture<NsdServiceInfo>()
+        val resolvedInfo = CompletableFuture<NsdServiceInfo>()
 
         nsdManager.registerServiceInfoCallback(
             queryInfo,
@@ -312,8 +310,7 @@ class VmLauncherService : Service() {
             },
         )
 
-        resolvedInfo.orTimeout(VM_BOOT_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
-        return resolvedInfo
+        return resolvedInfo.orTimeout(VM_BOOT_TIMEOUT_SECONDS.toLong(), TimeUnit.SECONDS)
     }
 
     private fun createNotificationForTerminalClose(): Notification {
@@ -397,7 +394,6 @@ class VmLauncherService : Service() {
             changed = true
         }
 
-        val image = InstalledImage.getDefault(this)
         if (image.hasBackup()) {
             val backup = image.backupFile
             builder.addDisk(VirtualMachineCustomImageConfig.Disk.RWDisk(backup.toString()))
@@ -442,19 +438,17 @@ class VmLauncherService : Service() {
             return
         }
 
-        bgThreads.execute(
-            Runnable {
-                // TODO(b/373533555): we can use mDNS for that.
-                val debianServicePortFile = File(filesDir, "debian_service_port")
-                try {
-                    FileOutputStream(debianServicePortFile).use { writer ->
-                        writer.write(server!!.port.toString().toByteArray())
-                    }
-                } catch (e: IOException) {
-                    Log.d(TAG, "cannot write grpc port number", e)
+        bgThreads.execute {
+            // TODO(b/373533555): we can use mDNS for that.
+            val debianServicePortFile = File(filesDir, "debian_service_port")
+            try {
+                FileOutputStream(debianServicePortFile).use { writer ->
+                    writer.write(server!!.port.toString().toByteArray())
                 }
+            } catch (e: IOException) {
+                Log.d(TAG, "cannot write grpc port number", e)
             }
-        )
+        }
 
         if (Flags.terminalStorageBalloon()) {
             StorageBalloonWorker.start(this, debianService!!)
@@ -559,8 +553,9 @@ class VmLauncherService : Service() {
                         when (resultCode) {
                             RESULT_START -> callback.onVmStart()
                             RESULT_TERMINAL_AVAIL -> {
-                                val ipAddress = resultData!!.getString(KEY_TERMINAL_IPADDRESS)
-                                val port = resultData!!.getInt(KEY_TERMINAL_PORT)
+                                val data = resultData!!
+                                val ipAddress = data.getString(KEY_TERMINAL_IPADDRESS)
+                                val port = data.getInt(KEY_TERMINAL_PORT)
                                 callback.onTerminalAvailable(TerminalInfo(ipAddress!!, port))
                             }
                             RESULT_STOP -> callback.onVmStop()

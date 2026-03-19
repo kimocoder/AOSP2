@@ -52,8 +52,10 @@ android {
     }
 
     lint {
-        abortOnError = false
-        checkReleaseBuilds = false
+        abortOnError = true
+        checkReleaseBuilds = true
+        // Disable lint checks that require missing platform SDK stubs
+        disable += setOf("NewApi", "InlinedApi", "ObsoleteSdkInt")
     }
 }
 

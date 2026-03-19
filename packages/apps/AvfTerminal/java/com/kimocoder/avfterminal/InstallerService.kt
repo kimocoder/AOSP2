@@ -135,17 +135,15 @@ class InstallerService : Service() {
             ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE,
         )
 
-        executorService.execute(
-            Runnable {
-                val success = downloadFromSdcard() || downloadFromUrl(isWifiOnly)
-                stopForeground(STOP_FOREGROUND_REMOVE)
+        executorService.execute {
+            val success = downloadFromSdcard() || downloadFromUrl(isWifiOnly)
+            stopForeground(STOP_FOREGROUND_REMOVE)
 
-                synchronized(lock) { isInstalling = false }
-                if (success) {
-                    notifyCompleted()
-                }
+            synchronized(lock) { isInstalling = false }
+            if (success) {
+                notifyCompleted()
             }
-        )
+        }
     }
 
     private fun downloadFromSdcard(): Boolean {
@@ -220,22 +218,22 @@ class InstallerService : Service() {
     }
 
     private fun notifyError(displayText: String?) {
-        var listener: IInstallProgressListener
-        synchronized(lock) { listener = this@InstallerService.listener!! }
+        val listener: IInstallProgressListener?
+        synchronized(lock) { listener = this@InstallerService.listener }
 
         try {
-            listener.onError(displayText)
+            listener?.onError(displayText)
         } catch (e: Exception) {
             // ignore. Activity may not exist.
         }
     }
 
     private fun notifyCompleted() {
-        var listener: IInstallProgressListener
-        synchronized(lock) { listener = this@InstallerService.listener!! }
+        val listener: IInstallProgressListener?
+        synchronized(lock) { listener = this@InstallerService.listener }
 
         try {
-            listener.onCompleted()
+            listener?.onCompleted()
         } catch (e: Exception) {
             // ignore. Activity may not exist.
         }
@@ -259,7 +257,7 @@ class InstallerService : Service() {
 
         override fun requestInstall(isWifiOnly: Boolean) {
             val service = ensureServiceConnected()
-            synchronized(service.lock) { service.requestInstall(isWifiOnly) }
+            service.requestInstall(isWifiOnly)
         }
 
         override fun setProgressListener(listener: IInstallProgressListener) {
@@ -303,13 +301,13 @@ class InstallerService : Service() {
                         offset + totalRead,
                         min(READ_BYTES, remaining),
                     )
-                if (read <= 0) {
+                if (read < 0) {
                     break
                 }
                 totalRead += read
                 remaining -= read
             }
-            return totalRead
+            return if (totalRead == 0 && numToRead > 0) -1 else totalRead
         }
 
         @Throws(IOException::class)
