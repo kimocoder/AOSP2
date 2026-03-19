@@ -27,7 +27,6 @@ import androidx.window.embedding.SplitPairFilter
 import androidx.window.embedding.SplitPairRule
 import androidx.window.embedding.SplitPlaceholderRule
 import androidx.window.embedding.SplitRule
-import com.android.system.virtualmachine.flags.Flags
 
 class SplitInitializer : Initializer<RuleController> {
 
@@ -41,7 +40,7 @@ class SplitInitializer : Initializer<RuleController> {
                 )
             )
 
-        if (Flags.terminalStorageBalloon()) {
+        if (FlagsCompat.terminalStorageBalloon()) {
             filters.add(
                 SplitPairFilter(
                     ComponentName(context, SettingsActivity::class.java),

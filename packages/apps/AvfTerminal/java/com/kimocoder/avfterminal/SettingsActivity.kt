@@ -19,7 +19,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.system.virtualmachine.flags.Flags
 import com.google.android.material.appbar.MaterialToolbar
 
 class SettingsActivity : AppCompatActivity() {
@@ -31,7 +30,7 @@ class SettingsActivity : AppCompatActivity() {
         val toolbar: MaterialToolbar = findViewById(R.id.settings_toolbar)
         setSupportActionBar(toolbar)
         var settingsItems = mutableListOf<SettingsItem>()
-        if (!Flags.terminalStorageBalloon()) {
+        if (!FlagsCompat.terminalStorageBalloon()) {
             settingsItems.add(
                 SettingsItem(
                     resources.getString(R.string.settings_disk_resize_title),
