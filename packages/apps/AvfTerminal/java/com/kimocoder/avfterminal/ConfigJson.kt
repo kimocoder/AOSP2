@@ -137,7 +137,7 @@ internal data class ConfigJson(
                 val terminalUid = getTerminalUid(context)
                 if (sharedPath?.contains("emulated") == true) {
                     if (Environment.isExternalStorageManager()) {
-                        val currentUserId = context.userId
+                        val currentUserId = PlatformCompat.getUserId(context)
                         val path = "$sharedPath/$currentUserId/Download"
                         return VirtualMachineCustomImageConfig.SharedPath(
                             path,
@@ -177,9 +177,7 @@ internal data class ConfigJson(
 
         @Throws(PackageManager.NameNotFoundException::class)
         fun getTerminalUid(context: Context): Int {
-            return context
-                .getPackageManager()
-                .getPackageUidAsUser(context.getPackageName(), context.userId)
+            return PlatformCompat.getPackageUidAsUser(context, context.getPackageName(), PlatformCompat.getUserId(context))
         }
 
         companion object {
@@ -313,7 +311,7 @@ internal data class ConfigJson(
             val rules: Map<String, String> =
                 mapOf(
                     "\\\$PAYLOAD_DIR" to InstalledImage.getDefault(context).installDir.toString(),
-                    "\\\$USER_ID" to context.userId.toString(),
+                    "\\\$USER_ID" to PlatformCompat.getUserId(context).toString(),
                     "\\\$PACKAGE_NAME" to context.getPackageName(),
                     "\\\$APP_DATA_DIR" to context.getDataDir().toString(),
                 )

@@ -19,7 +19,6 @@ import android.crosvm.ICrosvmAndroidDisplayService
 import android.graphics.PixelFormat
 import android.os.ParcelFileDescriptor
 import android.os.RemoteException
-import android.os.ServiceManager
 import android.system.virtualizationservice_internal.IVirtualizationServiceInternal
 import android.util.Log
 import android.view.SurfaceControl
@@ -30,7 +29,6 @@ import java.io.IOException
 import java.lang.RuntimeException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import libcore.io.IoBridge
 
 /** Provides Android-side surface from given SurfaceView to a VM instance as a display for that */
 internal class DisplayProvider(
@@ -38,15 +36,15 @@ internal class DisplayProvider(
     private val cursorView: SurfaceView,
 ) {
     private val virtService: IVirtualizationServiceInternal by lazy {
-        val b = ServiceManager.waitForService("android.system.virtualizationservice")
+        val b = PlatformCompat.waitForService("android.system.virtualizationservice")
         IVirtualizationServiceInternal.Stub.asInterface(b)
     }
     private var cursorHandler: CursorHandler? = null
 
     init {
-        mainView.setSurfaceLifecycle(SurfaceView.SURFACE_LIFECYCLE_FOLLOWS_ATTACHMENT)
+        PlatformCompat.setSurfaceLifecycle(mainView, PlatformCompat.getSurfaceLifecycleFollowsAttachment())
         mainView.holder.addCallback(Callback(SurfaceKind.MAIN))
-        cursorView.setSurfaceLifecycle(SurfaceView.SURFACE_LIFECYCLE_FOLLOWS_ATTACHMENT)
+        PlatformCompat.setSurfaceLifecycle(cursorView, PlatformCompat.getSurfaceLifecycleFollowsAttachment())
         cursorView.holder.addCallback(Callback(SurfaceKind.CURSOR))
         cursorView.holder.setFormat(PixelFormat.RGBA_8888)
         cursorView.setZOrderMediaOverlay(true)
@@ -152,7 +150,7 @@ internal class DisplayProvider(
                     }
                     byteBuffer.clear()
                     val bytes =
-                        IoBridge.read(
+                        libcore.io.IoBridge.read(
                             stream.fileDescriptor,
                             byteBuffer.array(),
                             0,

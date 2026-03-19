@@ -32,7 +32,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.os.ResultReceiver
 import android.os.StatFs
-import android.os.SystemProperties
+// SystemProperties accessed via PlatformCompat
 import android.system.virtualmachine.VirtualMachine
 import android.system.virtualmachine.VirtualMachineCustomImageConfig
 import android.system.virtualmachine.VirtualMachineCustomImageConfig.AudioConfig
@@ -327,7 +327,7 @@ class VmLauncherService : Service() {
                 stopIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
-        val icon = Icon.createWithResource(resources, R.drawable.ic_launcher_foreground)
+        val icon = Icon.createWithResource(this, R.drawable.ic_launcher_foreground)
         val stopActionText: String? =
             resources.getString(R.string.service_notification_force_quit_action)
         val stopNotificationTitle: String? =
@@ -336,7 +336,7 @@ class VmLauncherService : Service() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setContentTitle(stopNotificationTitle)
             .setOngoing(true)
-            .setSilent(true)
+            .setSound(null).setVibrate(longArrayOf())
             .addAction(Notification.Action.Builder(icon, stopActionText, stopPendingIntent).build())
             .build()
     }
@@ -540,7 +540,7 @@ class VmLauncherService : Service() {
 
         private val VM_BOOT_TIMEOUT_SECONDS: Int =
             {
-                val deviceName = SystemProperties.get("ro.product.vendor.device", "")
+                val deviceName = PlatformCompat.getSystemProperty("ro.product.vendor.device", "")
                 val cuttlefish = deviceName.startsWith("vsoc_")
                 val goldfish = deviceName.startsWith("emu64")
 

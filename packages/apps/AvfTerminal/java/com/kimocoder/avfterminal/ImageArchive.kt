@@ -146,7 +146,7 @@ internal class ImageArchive {
     companion object {
         private const val DIR_IN_SDCARD = "linux"
         private const val ARCHIVE_NAME = "images.tar.gz"
-        private val BUILD_TAG = Integer.toString(Build.VERSION.SDK_INT_FULL)
+        private val BUILD_TAG = Integer.toString(PlatformCompat.getSdkIntFull())
         private val HOST_URL = "https://dl.google.com/android/ferrochrome/$BUILD_TAG"
 
         fun getSdcardPathForTesting(): Path {
@@ -181,7 +181,7 @@ internal class ImageArchive {
          */
         fun getDefault(): ImageArchive {
             val archive = fromSdCard()
-            return if (Build.isDebuggable() && archive.exists()) {
+            return if (PlatformCompat.isDebuggable() && archive.exists()) {
                 archive
             } else {
                 fromInternet()

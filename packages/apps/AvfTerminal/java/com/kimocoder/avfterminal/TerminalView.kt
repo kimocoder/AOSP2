@@ -160,7 +160,7 @@ class TerminalView(context: Context, attrs: AttributeSet?) :
                 // which usually is NBSP.
                 // Note: don't use Characters.isWhitespace as it doesn't recognize NBSP as a
                 // whitespace.
-                return (info.getText()?.all { TextUtils.isWhitespace(it.code) }) == true
+                return (info.getText()?.all { it.isWhitespace() || it == '\u00A0' }) == true
             }
 
             override fun createAccessibilityNodeInfo(id: Int): AccessibilityNodeInfo? {

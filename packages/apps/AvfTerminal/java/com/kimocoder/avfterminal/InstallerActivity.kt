@@ -15,14 +15,13 @@
  */
 package com.kimocoder.avfterminal
 
-import android.annotation.MainThread
+import androidx.annotation.MainThread
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.ConditionVariable
-import android.os.FileUtils
 import android.os.IBinder
 import android.os.RemoteException
 import android.text.format.Formatter
@@ -101,7 +100,7 @@ public class InstallerActivity : BaseActivity() {
     override fun onResume() {
         super.onResume()
 
-        if (Build.isDebuggable() && fromSdCard().exists()) {
+        if (PlatformCompat.isDebuggable() && fromSdCard().exists()) {
             showSnackBar("Auto installing", Snackbar.LENGTH_LONG)
             requestInstall()
         }
@@ -136,7 +135,7 @@ public class InstallerActivity : BaseActivity() {
     }
 
     fun handleInternalError(e: Exception) {
-        if (Build.isDebuggable()) {
+        if (PlatformCompat.isDebuggable()) {
             showSnackBar(
                 e.message + ". File a bugreport to go/ferrochrome-bug",
                 Snackbar.LENGTH_INDEFINITE,
@@ -283,6 +282,6 @@ public class InstallerActivity : BaseActivity() {
     }
 
     companion object {
-        private val ESTIMATED_IMG_SIZE_BYTES = FileUtils.parseSize("550MB")
+        private val ESTIMATED_IMG_SIZE_BYTES = PlatformCompat.parseSize("550MB")
     }
 }

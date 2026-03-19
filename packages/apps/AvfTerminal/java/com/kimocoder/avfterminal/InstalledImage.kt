@@ -16,7 +16,7 @@
 package com.kimocoder.avfterminal
 
 import android.content.Context
-import android.os.FileUtils
+// FileUtils accessed via PlatformCompat
 import android.system.ErrnoException
 import android.system.Os
 import android.system.OsConstants
@@ -50,7 +50,7 @@ public class InstalledImage private constructor(val installDir: Path) {
     /** Fully uninstall this InstalledImage by deleting everything. */
     @Throws(IOException::class)
     fun uninstallFully() {
-        FileUtils.deleteContentsAndDir(installDir.toFile())
+        PlatformCompat.deleteContentsAndDir(installDir.toFile())
     }
 
     private fun readBuildId(): String {

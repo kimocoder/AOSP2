@@ -1,0 +1,150 @@
+[
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_activity_headless.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/activity_headless.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_background_tabitem_selected.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/background_tabitem_selected.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_settings_port_forwarding.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_port_forwarding.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_baseline_settings_backup_restore_24.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/baseline_settings_backup_restore_24.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_launcher_background.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_launcher_background.xml"
+    },
+    {
+        "merged": "com.kimocoder.avfterminal.app-debug-55:/layout_settings_port_forwarding_inactive_item.xml.flat",
+        "source": "com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_port_forwarding_inactive_item.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/mipmap-xxxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_settings_disk_resize.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_disk_resize.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/mipmap-xhdpi_ic_launcher_round.webp.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/mipmap-xhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_display.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_display.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_baseline_storage_24.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/baseline_storage_24.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_settings.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_settings.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_activity_upgrade.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/activity_upgrade.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_close.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_close.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_settings_activity.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_activity.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/mipmap-mdpi_ic_launcher_round.webp.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_tabitem_terminal.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/tabitem_terminal.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_activity_installer.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/activity_installer.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_settings_port_forwarding_inactive_add_dialog.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_port_forwarding_inactive_add_dialog.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_baseline_call_missed_outgoing_24.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/baseline_call_missed_outgoing_24.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_settings_list_item.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_list_item.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_launcher_monochrome.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_launcher_monochrome.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/mipmap-xxhdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_activity_display.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/activity_display.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/mipmap-hdpi_ic_launcher_round.webp.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/mipmap-hdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_terminal.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_terminal.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_modifier_keys_doubleline.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/modifier_keys_doubleline.xml"
+    },
+    {
+        "merged": "com.kimocoder.avfterminal.app-debug-55:/layout_settings_port_forwarding_active_item.xml.flat",
+        "source": "com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_port_forwarding_active_item.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_modifier_keys_singleline.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/modifier_keys_singleline.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_settings_recovery.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/settings_recovery.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_fragment_terminal_tab.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/fragment_terminal_tab.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/layout_activity_error.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/layout/activity_error.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/xml_share_file_path.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/xml/share_file_path.xml"
+    },
+    {
+        "merged": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-debug-55:/drawable_ic_add.xml.flat",
+        "source": "/root/.gradle/daemon/8.11.1/com.kimocoder.avfterminal.app-AvfTerminal-58:/drawable/ic_add.xml"
+    }
+]

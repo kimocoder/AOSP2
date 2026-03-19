@@ -15,7 +15,7 @@
  */
 package com.kimocoder.avfterminal
 
-import android.annotation.MainThread
+import androidx.annotation.MainThread
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log

@@ -195,4 +195,18 @@
 
     <!-- Default title of a terminal tab [CHAR LIMIT=10] -->
     <string name="tab_default_title">Tab</string>
+
+    <!-- Modifier key button labels -->
+    <string name="btn_esc_text">Esc</string>
+    <string name="btn_tab_text">Tab</string>
+    <string name="btn_ctrl_text">Ctrl</string>
+    <string name="btn_alt_text">Alt</string>
+    <string name="btn_home_text">Home</string>
+    <string name="btn_end_text">End</string>
+    <string name="btn_pgup_text">PgUp</string>
+    <string name="btn_pgdn_text">PgDn</string>
+    <string name="btn_up_text">↑</string>
+    <string name="btn_down_text">↓</string>
+    <string name="btn_left_text">←</string>
+    <string name="btn_right_text">→</string>
 </resources>

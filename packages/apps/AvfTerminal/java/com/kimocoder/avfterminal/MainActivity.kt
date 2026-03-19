@@ -30,7 +30,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.ConditionVariable
 import android.os.Environment
-import android.os.SystemProperties
+// SystemProperties accessed via PlatformCompat
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
@@ -217,7 +217,7 @@ public class MainActivity :
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
-        if (Build.isDebuggable() && event.keyCode == KeyEvent.KEYCODE_UNKNOWN) {
+        if (PlatformCompat.isDebuggable() && event.keyCode == KeyEvent.KEYCODE_UNKNOWN) {
             if (event.action == KeyEvent.ACTION_UP) {
                 ErrorActivity.start(this, Exception("Debug: KeyEvent.KEYCODE_UNKNOWN"))
             }
@@ -240,7 +240,7 @@ public class MainActivity :
         super.onPause()
         MediaScannerConnection.scanFile(
             this,
-            arrayOf("/storage/emulated/${userId}/Download"),
+            arrayOf("/storage/emulated/${PlatformCompat.getUserId(this)}/Download"),
             null /* mimeTypes */,
             null, /* callback */
         )
@@ -365,10 +365,10 @@ public class MainActivity :
                 stopIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
-        val icon = Icon.createWithResource(resources, R.drawable.ic_launcher_foreground)
+        val icon = Icon.createWithResource(this, R.drawable.ic_launcher_foreground)
         val notification: Notification =
             Notification.Builder(this, Application.CHANNEL_LONG_RUNNING_ID)
-                .setSilent(true)
+                .setSound(null).setVibrate(longArrayOf())
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(resources.getString(R.string.service_notification_title))
                 .setContentText(resources.getString(R.string.service_notification_content))
@@ -426,7 +426,7 @@ public class MainActivity :
         init {
             val prop =
                 DeviceProperties.create(
-                    DeviceProperties.PropertyGetter { key: String -> SystemProperties.get(key) }
+                    DeviceProperties.PropertyGetter { key: String -> PlatformCompat.getSystemProperty(key) }
                 )
             TERMINAL_CONNECTION_TIMEOUT_MS =
                 if (prop.isCuttlefish() || prop.isGoldfish()) {

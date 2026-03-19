@@ -72,7 +72,7 @@ class InstallerService : Service() {
             )
         notification =
             Notification.Builder(this, Application.CHANNEL_LONG_RUNNING_ID)
-                .setSilent(true)
+                .setSound(null).setVibrate(longArrayOf())
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(getString(R.string.installer_notif_title_text))
                 .setContentText(getString(R.string.installer_notif_desc_text))
@@ -153,7 +153,7 @@ class InstallerService : Service() {
         val archive_path = archive.getPath()
 
         // Installing from sdcard is preferred, but only supported only in debuggable build.
-        if (!Build.isDebuggable()) {
+        if (!PlatformCompat.isDebuggable()) {
             Log.i(TAG, "Non-debuggable build doesn't support installation from $archive_path")
             return false
         }
