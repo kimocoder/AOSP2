@@ -1,0 +1,301 @@
+# CI workflow for kimocoder/AOSP2 — AvfTerminal
+#
+# ┌─────────────────────────────────────────────────────────────────────────┐
+# │  BUILD STRATEGY NOTE                                                    │
+# │                                                                         │
+# │  The AvfTerminal app (packages/apps/AvfTerminal/) uses the AOSP/Soong  │
+# │  build system (Android.bp).  It is NOT a standard Gradle project.       │
+# │                                                                         │
+# │  Building the actual APK requires:                                      │
+# │    • A full AOSP source checkout (hundreds of GB)                       │
+# │    • Platform-only libraries (framework-virtualization.impl, etc.)      │
+# │    • Running:  m KimoAvfTerminal                                        │
+# │                                                                         │
+# │  Because GitHub-hosted runners cannot supply the full AOSP tree,        │
+# │  this workflow performs structural validation instead of a full APK     │
+# │  build.  It checks that:                                                │
+# │    • All required source files are present                              │
+# │    • XML files (manifests, layouts, drawables) are well-formed         │
+# │    • Kotlin/AIDL files carry the correct package declaration            │
+# │    • The package name in AndroidManifest.xml is consistent              │
+# │  A validation report is uploaded as a workflow artifact.               │
+# └─────────────────────────────────────────────────────────────────────────┘
+
+name: CI – AvfTerminal
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+# Restrict GITHUB_TOKEN to the minimum permissions required.
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Job 1: Validate the imported app's structure and source integrity
+  # ---------------------------------------------------------------------------
+  validate:
+    name: Validate App Structure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 1a. Verify that all expected files are present
+      # -----------------------------------------------------------------------
+      - name: Check required files exist
+        run: |
+          set -euo pipefail
+          APP=packages/apps/AvfTerminal
+
+          required=(
+            "$APP/Android.bp"
+            "$APP/AndroidManifest.xml"
+            "$APP/proguard.flags"
+            "$APP/jarjar-rules.txt"
+            "$APP/java/com/kimocoder/avfterminal/Application.kt"
+            "$APP/java/com/kimocoder/avfterminal/MainActivity.kt"
+            "$APP/java/com/kimocoder/avfterminal/VmLauncherService.kt"
+            "$APP/java/com/kimocoder/avfterminal/InstallerService.kt"
+            "$APP/aidl/com/kimocoder/avfterminal/IInstallerService.aidl"
+            "$APP/aidl/com/kimocoder/avfterminal/IInstallProgressListener.aidl"
+            "$APP/res/values/strings.xml"
+            "$APP/res/values/styles.xml"
+          )
+
+          fail=0
+          for f in "${required[@]}"; do
+            if [[ -f "$f" ]]; then
+              echo "✓  $f"
+            else
+              echo "✗  MISSING: $f"
+              fail=1
+            fi
+          done
+
+          echo ""
+          if [[ $fail -ne 0 ]]; then
+            echo "One or more required files are missing."
+            exit 1
+          fi
+          echo "All required files are present."
+
+      # -----------------------------------------------------------------------
+      # 1b. Validate all XML files (manifests, layouts, resources, drawables)
+      # -----------------------------------------------------------------------
+      - name: Install xmllint
+        run: sudo apt-get install -y --no-install-recommends libxml2-utils
+
+      - name: Validate XML files
+        run: |
+          set -euo pipefail
+          APP=packages/apps/AvfTerminal
+
+          fail=0
+          while IFS= read -r xml; do
+            if xmllint --noout "$xml" 2>&1; then
+              echo "✓  $xml"
+            else
+              echo "✗  Invalid XML: $xml"
+              fail=1
+            fi
+          done < <(find "$APP" -name "*.xml" | sort)
+
+          echo ""
+          if [[ $fail -ne 0 ]]; then
+            echo "One or more XML files are not well-formed."
+            exit 1
+          fi
+          echo "All XML files are well-formed."
+
+      # -----------------------------------------------------------------------
+      # 1c. Check that every Kotlin source file declares the correct package
+      # -----------------------------------------------------------------------
+      - name: Validate Kotlin package declarations
+        run: |
+          set -euo pipefail
+          APP=packages/apps/AvfTerminal
+          EXPECTED="com.kimocoder.avfterminal"
+
+          fail=0
+          while IFS= read -r kt; do
+            if grep -qE "^package ${EXPECTED}" "$kt"; then
+              echo "✓  $kt"
+            else
+              echo "✗  Wrong/missing package declaration in $kt"
+              fail=1
+            fi
+          done < <(find "$APP/java" -name "*.kt" | sort)
+
+          echo ""
+          if [[ $fail -ne 0 ]]; then
+            echo "Package declaration mismatch in one or more Kotlin files."
+            exit 1
+          fi
+          echo "All Kotlin source files declare the correct package."
+
+      # -----------------------------------------------------------------------
+      # 1d. Check that every AIDL file declares the correct package
+      # -----------------------------------------------------------------------
+      - name: Validate AIDL package declarations
+        run: |
+          set -euo pipefail
+          APP=packages/apps/AvfTerminal
+          EXPECTED="com.kimocoder.avfterminal"
+
+          fail=0
+          while IFS= read -r aidl; do
+            if grep -qE "^package ${EXPECTED}" "$aidl"; then
+              echo "✓  $aidl"
+            else
+              echo "✗  Wrong/missing package declaration in $aidl"
+              fail=1
+            fi
+          done < <(find "$APP/aidl" -name "*.aidl" | sort)
+
+          echo ""
+          if [[ $fail -ne 0 ]]; then
+            echo "Package declaration mismatch in one or more AIDL files."
+            exit 1
+          fi
+          echo "All AIDL files declare the correct package."
+
+      # -----------------------------------------------------------------------
+      # 1e. Confirm AndroidManifest.xml carries the expected package name
+      # -----------------------------------------------------------------------
+      - name: Validate AndroidManifest package name
+        run: |
+          set -euo pipefail
+          MANIFEST=packages/apps/AvfTerminal/AndroidManifest.xml
+          EXPECTED='package="com.kimocoder.avfterminal"'
+
+          if grep -qF "$EXPECTED" "$MANIFEST"; then
+            echo "✓  AndroidManifest.xml package name is correct: com.kimocoder.avfterminal"
+          else
+            echo "✗  Expected package attribute not found in AndroidManifest.xml"
+            echo "   Expected: $EXPECTED"
+            exit 1
+          fi
+
+      # -----------------------------------------------------------------------
+      # 1f. Confirm Android.bp carries the renamed build target names
+      # -----------------------------------------------------------------------
+      - name: Validate Android.bp target names
+        run: |
+          set -euo pipefail
+          BP=packages/apps/AvfTerminal/Android.bp
+
+          fail=0
+          for target in "KimoAvfTerminal" "KimoAvfTerminal.aidl"; do
+            if grep -qF "\"$target\"" "$BP"; then
+              echo "✓  Android.bp contains target: $target"
+            else
+              echo "✗  Android.bp is missing target: $target"
+              fail=1
+            fi
+          done
+
+          for old_target in "VmTerminalApp"; do
+            if grep -qF "\"$old_target\"" "$BP"; then
+              echo "✗  Android.bp still contains upstream target name: $old_target"
+              fail=1
+            else
+              echo "✓  Android.bp does not contain upstream name: $old_target"
+            fi
+          done
+
+          [[ $fail -eq 0 ]] || exit 1
+
+      # -----------------------------------------------------------------------
+      # 1g. Generate and upload a validation report
+      # -----------------------------------------------------------------------
+      - name: Generate validation report
+        if: always()
+        run: |
+          APP=packages/apps/AvfTerminal
+          {
+            echo "# AvfTerminal Validation Report"
+            echo "Generated: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            echo "Commit:    ${GITHUB_SHA:-local}"
+            echo "Ref:       ${GITHUB_REF:-unknown}"
+            echo ""
+            echo "## Kotlin Source Files"
+            find "$APP/java" -name "*.kt" | sort
+            echo ""
+            echo "## AIDL Files"
+            find "$APP/aidl" -name "*.aidl" | sort
+            echo ""
+            echo "## Resource Files"
+            find "$APP/res" -type f | sort
+            echo ""
+            echo "## XML Files"
+            find "$APP" -name "*.xml" | sort
+            echo ""
+            echo "## Build System"
+            echo "AOSP/Soong (Android.bp) — full APK build requires a complete AOSP checkout."
+            echo "Build target:  m KimoAvfTerminal"
+            echo ""
+            echo "## Platform Dependencies (from Android.bp static_libs / libs)"
+            grep -E '^\s+"[a-zA-Z]' "$APP/Android.bp" | tr -d ',"' | sed 's/^ */  /' || true
+          } > validation-report.txt
+
+          cat validation-report.txt
+
+      - name: Upload validation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: validation-report.txt
+
+  # ---------------------------------------------------------------------------
+  # Job 2: Print a human-readable note about the full APK build requirements
+  # ---------------------------------------------------------------------------
+  build-requirements:
+    name: APK Build Requirements
+    runs-on: ubuntu-latest
+    permissions: {}  # No token access needed — this job only prints text.
+
+    steps:
+      - name: Print AOSP build requirements
+        run: |
+          cat <<'EOF'
+          ╔══════════════════════════════════════════════════════════════════╗
+          ║        AvfTerminal APK — Full Build Requirements                ║
+          ╠══════════════════════════════════════════════════════════════════╣
+          ║                                                                  ║
+          ║  Build system:  AOSP / Soong  (Android.bp)                      ║
+          ║  Build target:  m KimoAvfTerminal                               ║
+          ║                                                                  ║
+          ║  Required platform libraries (not available on GitHub runners):  ║
+          ║    • android.system.virtualizationservice_internal-java          ║
+          ║    • framework-virtualization.impl   (hidden platform API)       ║
+          ║    • avf_aconfig_flags_java                                      ║
+          ║    • debian-service-grpclib-lite                                 ║
+          ║    • libcrosvm_android_display_service-java                      ║
+          ║    • libforwarder_host_jni   (JNI)                               ║
+          ║    • MicrodroidTestHelper                                        ║
+          ║                                                                  ║
+          ║  To build the APK locally:                                       ║
+          ║    1.  Sync a full AOSP source tree (Android 15 / main branch)   ║
+          ║    2.  Copy packages/apps/AvfTerminal/ into the AOSP tree        ║
+          ║    3.  source build/envsetup.sh && lunch <target>                ║
+          ║    4.  m KimoAvfTerminal                                         ║
+          ║                                                                  ║
+          ║  Why GitHub Actions cannot build the full APK:                   ║
+          ║    GitHub-hosted runners do not include an AOSP checkout.        ║
+          ║    Syncing one would require >100 GB of storage/bandwidth and    ║
+          ║    many hours of build time — not practical for CI on this repo. ║
+          ║                                                                  ║
+          ║  What this CI does instead:                                      ║
+          ║    • Validates that all required source files are present         ║
+          ║    • Checks XML files are well-formed                             ║
+          ║    • Verifies package name consistency across all source files    ║
+          ║    • Verifies Soong build-target names in Android.bp             ║
+          ║    • Uploads a validation report as a build artifact             ║
+          ╚══════════════════════════════════════════════════════════════════╝
+          EOF
