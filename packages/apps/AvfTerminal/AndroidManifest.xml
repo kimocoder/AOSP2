@@ -36,7 +36,7 @@
         android:theme="@style/VmTerminalAppTheme"
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
-        android:enabled="false"
+        android:enabled="true"
         android:name=".Application">
         <activity android:name=".MainActivity"
                   android:configChanges="orientation|screenSize|keyboard|keyboardHidden|navigation|uiMode|screenLayout|smallestScreenSize"
