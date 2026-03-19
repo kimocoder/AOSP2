@@ -40,7 +40,6 @@ import android.system.virtualmachine.VirtualMachineException
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.WorkerThread
-import com.android.system.virtualmachine.flags.Flags
 import com.kimocoder.avfterminal.InstalledImage.Companion.roundUp
 import com.kimocoder.avfterminal.MainActivity.Companion.PREFIX
 import com.kimocoder.avfterminal.MainActivity.Companion.TAG
@@ -209,7 +208,7 @@ class VmLauncherService : Service() {
         val configBuilder = json.toConfigBuilder(this)
         val customImageConfigBuilder = json.toCustomImageConfigBuilder(this)
 
-        if (Flags.terminalStorageBalloon()) {
+        if (FlagsCompat.terminalStorageBalloon()) {
             // When storage ballooning flag is enabled, convert rootfs disk into a sparse file.
             truncateDiskIfNecessary(image)
         } else {
@@ -377,7 +376,7 @@ class VmLauncherService : Service() {
 
         // Set the initial display size
         // TODO(jeongik): set up the display size on demand
-        if (Flags.terminalGuiSupport() && displayInfo != null) {
+        if (FlagsCompat.terminalGuiSupport() && displayInfo != null) {
             builder
                 .setDisplayConfig(
                     VirtualMachineCustomImageConfig.DisplayConfig.Builder()
@@ -450,7 +449,7 @@ class VmLauncherService : Service() {
             }
         }
 
-        if (Flags.terminalStorageBalloon()) {
+        if (FlagsCompat.terminalStorageBalloon()) {
             StorageBalloonWorker.start(this, debianService!!)
         }
     }

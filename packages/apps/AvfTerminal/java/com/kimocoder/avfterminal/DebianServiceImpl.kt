@@ -19,7 +19,6 @@ import android.content.Context
 import android.util.Log
 import androidx.annotation.Keep
 import com.android.internal.annotations.GuardedBy
-import com.android.system.virtualmachine.flags.Flags
 import com.kimocoder.avfterminal.MainActivity.Companion.TAG
 import com.kimocoder.avfterminal.proto.DebianServiceGrpc.DebianServiceImplBase
 import com.kimocoder.avfterminal.proto.ForwardingRequestItem
@@ -129,7 +128,7 @@ internal class DebianServiceImpl(context: Context) : DebianServiceImplBase() {
         request: StorageBalloonQueueOpeningRequest?,
         responseObserver: StreamObserver<StorageBalloonRequestItem?>,
     ) {
-        if (!Flags.terminalStorageBalloon()) {
+        if (!FlagsCompat.terminalStorageBalloon()) {
             return
         }
         Log.d(TAG, "openStorageRequestQueue")
