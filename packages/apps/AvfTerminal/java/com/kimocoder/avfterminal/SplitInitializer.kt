@@ -40,14 +40,18 @@ class SplitInitializer : Initializer<RuleController> {
                 )
             )
 
-        if (FlagsCompat.terminalStorageBalloon()) {
-            filters.add(
-                SplitPairFilter(
-                    ComponentName(context, SettingsActivity::class.java),
-                    ComponentName(context, SettingsDiskResizeActivity::class.java),
-                    null,
+        try {
+            if (FlagsCompat.terminalStorageBalloon()) {
+                filters.add(
+                    SplitPairFilter(
+                        ComponentName(context, SettingsActivity::class.java),
+                        ComponentName(context, SettingsDiskResizeActivity::class.java),
+                        null,
+                    )
                 )
-            )
+            }
+        } catch (_: Throwable) {
+            // Defensive: if platform Flags class is missing, skip the storage balloon filter
         }
 
         filters.add(
